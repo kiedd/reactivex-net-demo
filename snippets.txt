@@ -1,0 +1,17 @@
+.SubscribeOn(NewThreadScheduler.Default)
+.ObserveOn(CurrentThreadScheduler.Instance)
+
+var result = await CreateObservable().Where(x => x > 10).FirstAsync().ToTask();
+Console.WriteLine(result);
+
+Task.Run(() =>
+            {
+                var i = 10;
+                while (true)
+                {
+                    subject.OnNext(i++);
+                }
+            });
+
+var task1 = observable.FirstAsync().PublishLast();
+task1.Connect();
